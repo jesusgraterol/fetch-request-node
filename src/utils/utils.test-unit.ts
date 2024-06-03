@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, beforeAll, afterAll, beforeEach, afterEach, test, expect, vi } from 'vitest';
 import { IResponseDataType } from '../shared/types.js';
 import { ERRORS } from '../shared/errors.js';
