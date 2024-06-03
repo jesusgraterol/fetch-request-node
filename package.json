@@ -1,0 +1,30 @@
+{
+  "name": "fetch-request-node",
+  "version": "1.0.0",
+  "description": "he fetch-request-node package makes working with external APIs simple and efficient. This intuitive wrapper leverages the power of the Fetch API, providing a clean and concise interface for your API interactions.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusgraterol/fetch-request-node.git"
+  },
+  "keywords": [
+    "fetch",
+    "http",
+    "https",
+    "request",
+    "fetch-api",
+    "utils",
+    "utilities"
+  ],
+  "author": "Jesus Graterol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesusgraterol/fetch-request-node/issues"
+  },
+  "homepage": "https://github.com/jesusgraterol/fetch-request-node#readme"
+}
