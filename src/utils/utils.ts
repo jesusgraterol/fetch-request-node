@@ -6,6 +6,7 @@ import {
   IResponseData,
   IRequestOptions,
   IRequestMethod,
+  IOptions,
 } from '../shared/types.js';
 
 /* ************************************************************************************************
@@ -32,26 +33,40 @@ const __buildRequestInput = (requestInput: IRequestInput): URL => {
 
 /**
  * Builds the headers that will be used in the request. If none are provided, it returns the default
- * { 'Content-Type': 'application/json' }.
+ * Headers.
  * @param headers
  * @returns Headers
  * @throws
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
  */
 const __buildRequestHeaders = (headers: any): Headers => {
-  if (headers) {
-    if (headers instanceof Headers) {
-      return headers;
+  let reqHeaders: Headers;
+
+  // init the Headers Instance
+  if (headers && typeof headers === 'object') {
+    try {
+      reqHeaders = new Headers(headers);
+    } catch (e) {
+      throw new Error(encodeError(e, ERRORS.INVALID_REQUEST_HEADERS));
     }
-    if (typeof headers === 'object') {
-      try {
-        return new Headers(headers);
-      } catch (e) {
-        throw new Error(encodeError(e, ERRORS.INVALID_REQUEST_HEADERS));
-      }
-    }
+  } else if (headers instanceof Headers) {
+    reqHeaders = headers;
+  } else {
+    reqHeaders = new Headers({ Accept: 'application/json', 'Content-Type': 'application/json' });
   }
-  return new Headers({ 'Content-Type': 'application/json' });
+
+  // include the Accept Header in case it wasn't provided
+  if (!reqHeaders.has('Accept')) {
+    reqHeaders.append('Accept', 'application/json');
+  }
+
+  // include the Content-Type Header in case it wasn't included
+  if (!reqHeaders.has('Content-Type')) {
+    reqHeaders.append('Content-Type', 'application/json');
+  }
+
+  // finally, return the headers
+  return reqHeaders;
 };
 
 /**
@@ -130,6 +145,8 @@ const buildRequest = (input: IRequestInput, options?: Partial<IRequestOptions>):
  * @param res
  * @param dType
  * @returns Promise<IResponseData<T>>
+ * @throws
+ * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
 const extractResponseData = async <T extends IResponseDataType>(
   res: Response,
@@ -162,6 +179,35 @@ const extractResponseData = async <T extends IResponseDataType>(
 
 
 /* ************************************************************************************************
+ *                                          MISC HELPERS                                          *
+ ************************************************************************************************ */
+
+/**
+ * Builds the main options object based on given args (if any).
+ * @param options
+ * @returns IOptions
+ */
+const buildOptions = (options: Partial<IOptions> = {}): IOptions => ({
+  requestOptions: options.requestOptions,
+  responseDataType: options.responseDataType ?? 'json',
+  acceptableStatusCodes: options.acceptableStatusCodes,
+  acceptableStatusCodesRange: options.acceptableStatusCodesRange ?? { min: 200, max: 299 },
+});
+
+/**
+ * Creates an asynchronous delay that resolves once the provided seconds have passed.
+ * @param seconds
+ * @returns Promise<void>
+ */
+const delay = (seconds: number): Promise<void> => new Promise((resolve) => {
+  setTimeout(resolve, seconds * 1000);
+});
+
+
+
+
+
+/* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
 export {
@@ -170,4 +216,8 @@ export {
 
   // response helpers
   extractResponseData,
+
+  // misc helpers
+  buildOptions,
+  delay,
 };

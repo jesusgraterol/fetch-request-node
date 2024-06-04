@@ -18,8 +18,8 @@ type IRequestInput = string | URL;
  * utilities so the Request's body is always instantiated with a string.
  */
 interface IRequestOptions extends RequestInit {
-  method: IRequestMethod,
-  body: any
+  method: IRequestMethod; // this lib only makes use of these methods
+  body: any;
 }
 
 
@@ -53,6 +53,46 @@ type IResponseData<T> = T extends 'arrayBuffer' ? ArrayBuffer
         : T extends 'text' ? string
           : never;
 
+/**
+ * Options
+ * The options object that can be passed and used for any request.
+ */
+interface IOptions {
+  // the options that will be used to build the request
+  requestOptions?: Partial<IRequestOptions>;
+
+  // the expected data type that should be extracted from the response
+  responseDataType: IResponseDataType;
+
+  /**
+   * Response Status Codes
+   * The request's response can be validated by providing a list of acceptable codes or a range
+   * object. Keep in mind that if the acceptableStatusCodes array is provided, it will only perform
+   * that validation and ignore the acceptableStatusCodesRange.
+   */
+
+  // the list of status codes that won't throw an error
+  acceptableStatusCodes?: number[];
+
+  // the range of codes that are considered to be acceptable. Defaults to: { min: 200, max: 299 }
+  acceptableStatusCodesRange: { min: number, max: number };
+}
+
+/**
+ * Request Response
+ * The object containing the result of the Request.
+ */
+interface IRequestResponse {
+  // the HTTP status code extracted from the Response
+  code: number,
+
+  // the Response's Headers. Useful as some service providers attach important info in the headers
+  headers: Headers;
+
+  // the data extracted from the Response Instance
+  data: any;
+}
+
 
 
 
@@ -69,4 +109,6 @@ export type {
   IRequestMethod,
   IResponseDataType,
   IResponseData,
+  IOptions,
+  IRequestResponse,
 };

@@ -1,18 +1,24 @@
 import { describe, beforeAll, afterAll, beforeEach, afterEach, test, expect, vi } from 'vitest';
-import { IResponseDataType } from '../shared/types.js';
+import { IRequestOptions, IResponseDataType } from '../shared/types.js';
 import { ERRORS } from '../shared/errors.js';
-import { buildRequest, extractResponseData } from './utils.js';
+import { buildOptions, buildRequest, delay, extractResponseData } from './utils.js';
 
 /* ************************************************************************************************
  *                                           CONSTANTS                                            *
  ************************************************************************************************ */
 
-// the default headers when none are provided
-const DEFAULT_HEADERS = new Headers({ 'Content-Type': 'application/json' });
+// the default request headers when none are provided
+const DEFAULT_REQ_HEADERS = new Headers({
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+});
+
+
+
 
 
 /* ************************************************************************************************
- *                                             MOCKS                                              *
+ *                                            HELPERS                                             *
  ************************************************************************************************ */
 
 const rs = (): Response => (<any>{
@@ -32,14 +38,6 @@ const rs = (): Response => (<any>{
  ************************************************************************************************ */
 
 describe('buildRequest', () => {
-  beforeAll(() => { });
-
-  afterAll(() => { });
-
-  beforeEach(() => { });
-
-  afterEach(() => { });
-
   test('can instantiate a Request with valid data', () => {
     const req = buildRequest('https://www.mozilla.org/favicon.ico');
     expect(req.url).toBe('https://www.mozilla.org/favicon.ico');
@@ -53,10 +51,10 @@ describe('buildRequest', () => {
     expect(req.integrity).toBe('');
     expect(req.keepalive).toBe(false);
     expect(req.body).toBeNull();
-    expect(req.headers).toStrictEqual(DEFAULT_HEADERS);
+    expect(req.headers).toEqual(DEFAULT_REQ_HEADERS);
   });
 
-  test('can instantiate a Request with custom options', () => {
+  test('can instantiate a Request with custom options', async () => {
     const req = buildRequest('https://www.mozilla.org/favicon.ico', {
       method: 'POST',
       mode: 'same-origin',
@@ -67,6 +65,7 @@ describe('buildRequest', () => {
       referrerPolicy: 'strict-origin-when-cross-origin',
       integrity: 'sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=',
       keepalive: true,
+      body: { some: 'coolData' },
     });
     expect(req.url).toBe('https://www.mozilla.org/favicon.ico');
     expect(req.method).toBe('POST');
@@ -78,8 +77,11 @@ describe('buildRequest', () => {
     expect(req.referrerPolicy).toBe('strict-origin-when-cross-origin');
     expect(req.integrity).toBe('sha256-BpfBw7ivV8q2jLiT13fxDYAe2tJllusRSZ273h2nFSE=');
     expect(req.keepalive).toBe(true);
-    expect(req.body).toBeNull();
-    expect(req.headers).toStrictEqual(DEFAULT_HEADERS);
+    await expect(new Response(req.body).json()).resolves.toStrictEqual({ some: 'coolData' });
+    expect(req.headers).toStrictEqual(new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    }));
   });
 
   test('can use an URL instance rather than a string', () => {
@@ -89,12 +91,40 @@ describe('buildRequest', () => {
 
   test('can include custom headers', () => {
     const headers = new Headers({
+      Accept: 'text/html',
       'Content-Type': 'text/html',
       Authorization: 'bearer 123456',
     });
-    const req = buildRequest('https://www.mozilla.org/favicon.ico', {
-      headers,
+    const req = buildRequest('https://www.mozilla.org/favicon.ico', { headers });
+    expect(req.headers).toStrictEqual(headers);
+  });
+
+  test('includes the Accept and Content-Type Headers if they are not provided', () => {
+    const headers = new Headers({
+      Authorization: 'bearer 123456',
     });
+    expect(buildRequest('https://www.mozilla.org/favicon.ico', { headers }).headers).toStrictEqual(new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'bearer 123456',
+    }));
+  });
+
+  test('includes the Content-Type Header if it is not provided and the req has a body', () => {
+    const headers = new Headers({
+      Authorization: 'bearer 123456',
+    });
+    const req = buildRequest('https://www.mozilla.org/favicon.ico', { method: 'POST', headers, body: { foo: 'bar' } });
+    expect(req.headers).toStrictEqual(new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'bearer 123456',
+    }));
+  });
+
+  test('headers are case insensitive', () => {
+    const headers = new Headers({ accept: 'text/html', 'content-type': 'text/html' });
+    const req = buildRequest('https://www.mozilla.org/favicon.ico', { headers });
     expect(req.headers).toStrictEqual(headers);
   });
 
@@ -148,14 +178,6 @@ describe('buildRequest', () => {
 
 
 describe('extractResponseData', () => {
-  beforeAll(() => { });
-
-  afterAll(() => { });
-
-  beforeEach(() => { });
-
-  afterEach(() => { });
-
   test('can extract any data type', async () => {
     const res = rs();
     await extractResponseData(res, 'arrayBuffer');
@@ -174,5 +196,67 @@ describe('extractResponseData', () => {
 
   test('throws an error if an invalid dtype is provided', async () => {
     await expect(() => extractResponseData(rs(), <IResponseDataType>'nonsense')).rejects.toThrowError(ERRORS.INVALID_RESPONSE_DTYPE);
+  });
+});
+
+
+
+
+
+describe('buildOptions', () => {
+  test('can build the default options object', () => {
+    expect(buildOptions()).toStrictEqual({
+      requestOptions: undefined,
+      responseDataType: 'json',
+      acceptableStatusCodes: undefined,
+      acceptableStatusCodesRange: { min: 200, max: 299 },
+    });
+  });
+
+  test('can build a custom options object', () => {
+    const reqOptions: Partial<IRequestOptions> = {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/html' },
+    };
+    const range = { min: 100, max: 499 };
+    expect(buildOptions({
+      requestOptions: reqOptions,
+      responseDataType: 'text',
+      acceptableStatusCodes: [200, 201],
+      acceptableStatusCodesRange: range,
+    })).toStrictEqual({
+      requestOptions: reqOptions,
+      responseDataType: 'text',
+      acceptableStatusCodes: [200, 201],
+      acceptableStatusCodesRange: range,
+    });
+  });
+});
+
+
+
+
+
+describe('delay', () => {
+  beforeAll(() => {
+    vi.useFakeTimers();
+  });
+
+  afterAll(() => {
+    vi.useRealTimers();
+  });
+
+  beforeEach(() => { });
+
+  afterEach(() => { });
+
+  test('can delay the execution of a function for any number of seconds', async () => {
+    const mockFn = vi.fn();
+    delay(10).then(mockFn);
+    expect(mockFn).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(11 * 1000);
+
+    expect(mockFn).toHaveBeenCalledOnce();
   });
 });
