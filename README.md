@@ -2,7 +2,7 @@
 
 The `fetch-request-node` package makes working with external APIs simple and efficient. This intuitive wrapper leverages the power of the Fetch API, providing a clean and concise interface for your API interactions.
 
-
+If you are working on a browser-based environment, make use of [fetch-request-browser](https://github.com/jesusgraterol/fetch-request-browser) instead.
 
 
 
