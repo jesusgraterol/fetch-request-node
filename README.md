@@ -79,9 +79,7 @@ Build and send a `GET` HTTP Request:
 ```typescript
 sendGET(
   input: IRequestInput,
-  options?: Partial<IOptions>,
-  retryAttempts?: number,
-  retryDelaySeconds?: number
+  options?: Partial<IOptions>
 ): Promise<IRequestResponse>
 ```
 
