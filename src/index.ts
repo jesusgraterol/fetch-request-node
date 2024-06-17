@@ -10,7 +10,6 @@ import {
   buildOptions,
   buildRequest,
   extractResponseData,
-  delay,
 } from './utils/utils.js';
 import { validateResponse } from './validations/validations.js';
 
@@ -61,33 +60,10 @@ const send = async (
   };
 };
 
-
-/**
- * Executes the sendGET functionality. This func is wrapped inside of the sendGET in order to allow
- * a request to be retried.
- * @param input
- * @param options?
- * @returns Promise<IRequestResponse>
- */
-const __executeSendGET = (
-  input: IRequestInput,
-  options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'GET',
-  },
-});
 /**
  * Builds and sends a GET HTTP Request based on the provided input and options.
- * IMPORTANT: The browser environment can be highly unreliable as the user can physically move
- * around and suffer from an intermittent Internet connection. Therefore, some GET requests are
- * worth retrying as they could fail temporarily and prevent a view from loading.
  * @param input
  * @param options?
- * @param retryAttempts? - the number of times it will retry the request on failure
- * @param retryDelaySeconds? - the # of secs it will wait before re-sending the req. Defaults to 3
  * @returns Promise<IRequestResponse>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
@@ -98,23 +74,16 @@ const __executeSendGET = (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendGET = async (
+const sendGET = (
   input: IRequestInput,
   options?: Partial<IOptions>,
-  retryAttempts?: number,
-  retryDelaySeconds?: number,
-): Promise<IRequestResponse> => {
-  try {
-    return await __executeSendGET(input, options);
-  } catch (e) {
-    // if the request should be retried, activate the delay and do so. Otherwise, rethrow the error
-    if (typeof retryAttempts === 'number' && retryAttempts > 0) {
-      await delay(retryDelaySeconds || 3);
-      return sendGET(input, options, retryAttempts - 1, retryDelaySeconds);
-    }
-    throw e;
-  }
-};
+): Promise<IRequestResponse> => send(input, {
+  ...options,
+  requestOptions: {
+    ...options?.requestOptions,
+    method: 'GET',
+  },
+});
 
 /**
  * Builds and sends a POST HTTP Request based on the provided input and options.
