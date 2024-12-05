@@ -12,16 +12,12 @@ If you are working on a browser-based environment, make use of [fetch-request-br
 
 Install the package:
 ```bash
-$ npm install -S fetch-request-node
+npm install -S fetch-request-node
 ```
 
+## Examples
 
-
-
-
-<br />
-
-## Usage
+Send a `GET` request to [HTTPBin](https://httpbin.org/):
 
 ```typescript
 import { sendGET } from 'fetch-request-node';
@@ -62,7 +58,7 @@ await sendGET('https://httpbin.org/get');
 
 <br/>
 
-## API
+## API Reference
 
 Build and send an HTTP Request (any method):
 
@@ -127,6 +123,14 @@ sendDELETE(
 
 <br />
 
+## Types
+
+
+
+
+
+<br />
+
 ## Built With
 
 - TypeScript
@@ -139,11 +143,11 @@ sendDELETE(
 ## Running the Tests
 
 ```bash
-# Unit Tests
-$ npm run test:unit
+# unit tests
+npm run test:unit
 
-# Integration Tests
-$ npm run test:integration
+# integration tests
+npm run test:integration
 ```
 
 
@@ -162,42 +166,21 @@ $ npm run test:integration
 
 <br />
 
-## Acknowledgments
-
-- [MDN](https://developer.mozilla.org/en-US/)
-- [web.dev](https://web.dev/)
-
-
-
-
-
-<br />
-
-## @TODOS
-
-- [ ] Improve the docs
-
-
-
-
-
-<br />
-
 ## Deployment
 
 Install dependencies:
 ```bash
-$ npm install
+npm install
 ```
 
 
 Build the library:
 ```bash
-$ npm start
+npm start
 ```
 
 
 Publish to `npm`:
 ```bash
-$ npm publish
+npm publish
 ```
