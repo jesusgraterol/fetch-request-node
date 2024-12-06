@@ -52,6 +52,55 @@ await sendGET('https://httpbin.org/get');
 // }
 ```
 
+Send a `POST` request with `body` to [HTTPBin](https://httpbin.org/):
+
+```typescript
+import { sendPOST } from 'fetch-request-node';
+
+await sendPOST(
+  'https://httpbin.org/post?id=1',
+  {
+    requestOptions: { 
+      body, 
+      credentials: 'include',
+    },
+    acceptableStatusCodes: [200],
+  },
+);
+// {
+//   code: 200,
+//   headers: Headers {
+//     date: 'Fri, 06 Dec 2024 12:57:25 GMT',
+//     'content-type': 'application/json',
+//     'content-length': '619',
+//     connection: 'keep-alive',
+//     server: 'gunicorn/19.9.0',
+//     'access-control-allow-origin': '*',
+//     'access-control-allow-credentials': 'true'
+//   },
+//   data: {
+//     args: { id: '1' },
+//     data: '{"someKey":"Hello","someNumber":123456}',
+//     files: {},
+//     form: {},
+//     headers: {
+//       Accept: 'application/json',
+//       'Accept-Encoding': 'br, gzip, deflate',
+//       'Accept-Language': '*',
+//       'Content-Length': '39',
+//       'Content-Type': 'application/json',
+//       Host: 'httpbin.org',
+//       'Sec-Fetch-Mode': 'cors',
+//       'User-Agent': 'node',
+//       'X-Amzn-Trace-Id': 'Root=1-6752f4b5-76a61b597284afb62df479eb'
+//     },
+//     json: { someKey: 'Hello', someNumber: 123456 },
+//     origin: '136.144.19.233',
+//     url: 'https://httpbin.org/post?id=1'
+//   }
+}
+```
+
 
 
 
@@ -158,33 +207,33 @@ sendDELETE(
   The [`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) dictionary of the Fetch API represents the set of options that can be used to configure a fetch request.
   ```typescript
   interface RequestInit {
-      /** A BodyInit object or null to set request's body. */
-      body?: BodyInit | null;
-      /** A string indicating how the request will interact with the browser's cache to set request's cache. */
-      cache?: RequestCache;
-      /** A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request's credentials. */
-      credentials?: RequestCredentials;
-      /** A Headers object, an object literal, or an array of two-item arrays to set request's headers. */
-      headers?: HeadersInit;
-      /** A cryptographic hash of the resource to be fetched by request. Sets request's integrity. */
-      integrity?: string;
-      /** A boolean to set request's keepalive. */
-      keepalive?: boolean;
-      /** A string to set request's method. */
-      method?: string;
-      /** A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request's mode. */
-      mode?: RequestMode;
-      priority?: RequestPriority;
-      /** A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect. */
-      redirect?: RequestRedirect;
-      /** A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer. */
-      referrer?: string;
-      /** A referrer policy to set request's referrerPolicy. */
-      referrerPolicy?: ReferrerPolicy;
-      /** An AbortSignal to set request's signal. */
-      signal?: AbortSignal | null;
-      /** Can only be null. Used to disassociate request from any Window. */
-      window?: null;
+    /** A BodyInit object or null to set request's body. */
+    body?: BodyInit | null;
+    /** A string indicating how the request will interact with the browser's cache to set request's cache. */
+    cache?: RequestCache;
+    /** A string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL. Sets request's credentials. */
+    credentials?: RequestCredentials;
+    /** A Headers object, an object literal, or an array of two-item arrays to set request's headers. */
+    headers?: HeadersInit;
+    /** A cryptographic hash of the resource to be fetched by request. Sets request's integrity. */
+    integrity?: string;
+    /** A boolean to set request's keepalive. */
+    keepalive?: boolean;
+    /** A string to set request's method. */
+    method?: string;
+    /** A string to indicate whether the request will use CORS, or will be restricted to same-origin URLs. Sets request's mode. */
+    mode?: RequestMode;
+    priority?: RequestPriority;
+    /** A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect. */
+    redirect?: RequestRedirect;
+    /** A string whose value is a same-origin URL, "about:client", or the empty string, to set request's referrer. */
+    referrer?: string;
+    /** A referrer policy to set request's referrerPolicy. */
+    referrerPolicy?: ReferrerPolicy;
+    /** An AbortSignal to set request's signal. */
+    signal?: AbortSignal | null;
+    /** Can only be null. Used to disassociate request from any Window. */
+    window?: null;
   }
   ```
 </details>
@@ -249,7 +298,7 @@ sendDELETE(
   ```typescript
   interface IRequestResponse {
     // the HTTP status code extracted from the Response
-    code: number,
+    code: number;
 
     // the Response's Headers. Useful as some service providers attach important info in the headers
     headers: Headers;
