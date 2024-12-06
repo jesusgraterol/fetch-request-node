@@ -195,12 +195,12 @@ const sendDELETE = (
  ************************************************************************************************ */
 export {
   // types
-  IRequestInput,
-  IRequestMethod,
-  IRequestOptions,
-  IResponseDataType,
-  IOptions,
-  IRequestResponse,
+  type IRequestInput,
+  type IRequestMethod,
+  type IRequestOptions,
+  type IResponseDataType,
+  type IOptions,
+  type IRequestResponse,
 
   // implementation
   send,

@@ -12,7 +12,9 @@ import { ERRORS } from '../shared/errors.js';
  * @param res
  * @returns string
  */
-const __buildUnexpectedCodeErrorMessage = (res: Response): string => encodeError(`Request Failed: received unexpected response code '${res.status}': ${res.statusText}`, ERRORS.UNEXPECTED_RESPONSE_STATUS_CODE);
+const __buildUnexpectedCodeErrorMessage = (res: Response): string => (
+  encodeError(`Request Failed: received unexpected response code '${res.status}': ${res.statusText}`, ERRORS.UNEXPECTED_RESPONSE_STATUS_CODE)
+);
 
 /**
  * Validates the Response's status code. Note that if the acceptableStatusCodes array is provided
@@ -82,6 +84,5 @@ const validateResponse = (req: Request, res: Response, options: IOptions): void 
  *                                         MODULE EXPORTS                                         *
  ************************************************************************************************ */
 export {
-  // implementation
   validateResponse,
 };
