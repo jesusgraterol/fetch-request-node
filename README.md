@@ -60,8 +60,11 @@ import { sendPOST } from 'fetch-request-node';
 await sendPOST(
   'https://httpbin.org/post?id=1',
   {
-    requestOptions: { 
-      body, 
+    requestOptions: {
+      body: {
+        someKey: 'Hello',
+        someNumber: 123456,
+      },
       credentials: 'include',
     },
     acceptableStatusCodes: [200],
@@ -111,7 +114,7 @@ await sendPOST(
 
 <details>
   <summary><code>send</code></summary>
-  
+
   Builds and sends an HTTP Request based on the provided input and options.
   ```typescript
   await send(
@@ -150,7 +153,7 @@ await sendPOST(
 
 <details>
   <summary><code>sendGET</code></summary>
-  
+
   Builds and sends a `GET` HTTP Request based on the provided input and options.
   ```typescript
   await sendGET('https://httpbin.org/get?foo=hey&bar=123');
@@ -185,7 +188,7 @@ await sendPOST(
 
 <details>
   <summary><code>sendPOST</code></summary>
-  
+
   Builds and sends a `POST` HTTP Request based on the provided input and options.
   ```typescript
   await sendPOST(
@@ -236,7 +239,7 @@ await sendPOST(
 
 <details>
   <summary><code>sendPUT</code></summary>
-  
+
   Builds and sends a `PUT` HTTP Request based on the provided input and options.
   ```typescript
   await sendPUT(
@@ -287,7 +290,7 @@ await sendPOST(
 
 <details>
   <summary><code>sendPATCH</code></summary>
-  
+
   Builds and sends a `PATCH` HTTP Request based on the provided input and options.
   ```typescript
   await sendPATCH(
@@ -338,7 +341,7 @@ await sendPOST(
 
 <details>
   <summary><code>sendDELETE</code></summary>
-  
+
   Builds and sends a `DELETE` HTTP Request based on the provided input and options.
   ```typescript
   await sendDELETE('https://httpbin.org/delete?id=1');
@@ -387,7 +390,7 @@ await sendPOST(
 
 <details>
   <summary><code>IRequestInput</code></summary>
-  
+
   The URL of the request's target.
   ```typescript
   type IRequestInput = string | URL;
@@ -396,7 +399,7 @@ await sendPOST(
 
 <details>
   <summary><code>IRequestMethod</code></summary>
-  
+
   The HTTP Methods supported by this library. To make use of a different one, pass the method name directly in the request options.
   ```typescript
   type IRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -405,7 +408,7 @@ await sendPOST(
 
 <details>
   <summary><code>IRequestMethod</code></summary>
-  
+
   The HTTP Methods supported by this library. To make use of a different one, pass the method name directly in the request options.
   ```typescript
   type IRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -414,7 +417,7 @@ await sendPOST(
 
 <details>
   <summary><code>RequestInit</code></summary>
-  
+
   The [`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) dictionary of the Fetch API represents the set of options that can be used to configure a fetch request.
   ```typescript
   interface RequestInit {
@@ -451,7 +454,7 @@ await sendPOST(
 
 <details>
   <summary><code>IRequestOptions</code></summary>
-  
+
   The options that can be applied when sending a Fetch Request.
   IMPORTANT: the reason RequestInit is extended is because in the original type, the body property does not accept plain objects. Even though this makes sense,  utilities so the Request's body is always instantiated with a string.
   ```typescript
@@ -464,7 +467,7 @@ await sendPOST(
 
 <details>
   <summary><code>IResponseDataType</code></summary>
-  
+
   The type of data that will be extracted from the HTTP Response body.
   ```typescript
   type IResponseDataType = 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text';
@@ -473,7 +476,7 @@ await sendPOST(
 
 <details>
   <summary><code>IOptions</code></summary>
-  
+
   The options object that can be passed and used for any request.
   ```typescript
   interface IOptions {
@@ -504,7 +507,7 @@ await sendPOST(
 
 <details>
   <summary><code>IRequestResponse</code></summary>
-  
+
   The object containing the result of the Request.
   ```typescript
   interface IRequestResponse {
