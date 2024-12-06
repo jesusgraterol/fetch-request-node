@@ -109,64 +109,275 @@ await sendPOST(
 
 ## API Reference
 
-Build and send an HTTP Request (any method):
+<details>
+  <summary><code>send</code></summary>
+  
+  Builds and sends an HTTP Request based on the provided input and options.
+  ```typescript
+  await send(
+    'https://httpbin.org/get?foo=hey&bar=123', {
+      requestOptions: { method: 'GET' }
+    }
+  );
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:05:20 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '422',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: { bar: '123', foo: 'hey' },
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752f690-43ddfac50ee723b532cf3cf3'
+  //     },
+  //     origin: '136.144.19.106',
+  //     url: 'https://httpbin.org/get?foo=hey&bar=123'
+  //   }
+  // }
+  ```
+</details>
 
-```typescript
-send(
-  input: IRequestInput, 
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
+<details>
+  <summary><code>sendGET</code></summary>
+  
+  Builds and sends a `GET` HTTP Request based on the provided input and options.
+  ```typescript
+  await sendGET('https://httpbin.org/get?foo=hey&bar=123');
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:05:20 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '422',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: { bar: '123', foo: 'hey' },
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752f690-43ddfac50ee723b532cf3cf3'
+  //     },
+  //     origin: '136.144.19.106',
+  //     url: 'https://httpbin.org/get?foo=hey&bar=123'
+  //   }
+  // }
+  ```
+</details>
 
-<br />
+<details>
+  <summary><code>sendPOST</code></summary>
+  
+  Builds and sends a `POST` HTTP Request based on the provided input and options.
+  ```typescript
+  await sendPOST(
+    'https://httpbin.org/post',
+    {
+      requestOptions: {
+        body: {
+          someKey: 'Hello',
+          someNumber: 123456,
+        },
+      },
+    },
+  );
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:13:18 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '596',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: {},
+  //     data: '{"someKey":"Hello","someNumber":123456}',
+  //     files: {},
+  //     form: {},
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       'Content-Length': '39',
+  //       'Content-Type': 'application/json',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752f86e-366f8cb71596c46374885670'
+  //     },
+  //     json: { someKey: 'Hello', someNumber: 123456 },
+  //     origin: '136.144.19.99',
+  //     url: 'https://httpbin.org/post'
+  //   }
+  // }
+  ```
+</details>
 
-Build and send a `GET` HTTP Request:
-```typescript
-sendGET(
-  input: IRequestInput,
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
+<details>
+  <summary><code>sendPUT</code></summary>
+  
+  Builds and sends a `PUT` HTTP Request based on the provided input and options.
+  ```typescript
+  await sendPUT(
+    'https://httpbin.org/put',
+    {
+      requestOptions: {
+        body: {
+          someKey: 'Hello',
+          someNumber: 123456,
+        },
+      },
+    },
+  );
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:19:07 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '596',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: {},
+  //     data: '{"someKey":"Hello","someNumber":123456}',
+  //     files: {},
+  //     form: {},
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       'Content-Length': '39',
+  //       'Content-Type': 'application/json',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752f9cb-4633cbc111fccdc020c15081'
+  //     },
+  //     json: { someKey: 'Hello', someNumber: 123456 },
+  //     origin: '136.144.19.122',
+  //     url: 'https://httpbin.org/put'
+  //   }
+  // }
+  ```
+</details>
 
-<br />
+<details>
+  <summary><code>sendPATCH</code></summary>
+  
+  Builds and sends a `PATCH` HTTP Request based on the provided input and options.
+  ```typescript
+  await sendPATCH(
+    'https://httpbin.org/patch',
+    {
+      requestOptions: {
+        body: {
+          someKey: 'Hello',
+          someNumber: 123456,
+        },
+      },
+    },
+  );
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:22:54 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '597',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: {},
+  //     data: '{"someKey":"Hello","someNumber":123456}',
+  //     files: {},
+  //     form: {},
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       'Content-Length': '39',
+  //       'Content-Type': 'application/json',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752faae-7da3d0d33f55d85f1f563abb'
+  //     },
+  //     json: { someKey: 'Hello', someNumber: 123456 },
+  //     origin: '136.144.19.93',
+  //     url: 'https://httpbin.org/patch'
+  //   }
+  // }
+  ```
+</details>
 
-Build and send a `POST` HTTP Request:
-```typescript
-sendPOST(
-  input: IRequestInput,
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
+<details>
+  <summary><code>sendDELETE</code></summary>
+  
+  Builds and sends a `DELETE` HTTP Request based on the provided input and options.
+  ```typescript
+  await sendDELETE('https://httpbin.org/delete?id=1');
+  // {
+  //   code: 200,
+  //   headers: Headers {
+  //     date: 'Fri, 06 Dec 2024 13:25:41 GMT',
+  //     'content-type': 'application/json',
+  //     'content-length': '496',
+  //     connection: 'keep-alive',
+  //     server: 'gunicorn/19.9.0',
+  //     'access-control-allow-origin': '*',
+  //     'access-control-allow-credentials': 'true'
+  //   },
+  //   data: {
+  //     args: { id: '1' },
+  //     data: '',
+  //     files: {},
+  //     form: {},
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Accept-Encoding': 'br, gzip, deflate',
+  //       'Accept-Language': '*',
+  //       'Content-Type': 'application/json',
+  //       Host: 'httpbin.org',
+  //       'Sec-Fetch-Mode': 'cors',
+  //       'User-Agent': 'node',
+  //       'X-Amzn-Trace-Id': 'Root=1-6752fb55-62da6f1d3348e8a55af75ae3'
+  //     },
+  //     json: null,
+  //     origin: '136.144.19.240',
+  //     url: 'https://httpbin.org/delete?id=1'
+  //   }
+  // }
+  ```
+</details>
 
-<br />
 
-Build and send a `PUT` HTTP Request:
-```typescript
-sendPUT(
-  input: IRequestInput,
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
 
-<br />
-
-Build and send a `PATCH` HTTP Request:
-```typescript
-sendPATCH(
-  input: IRequestInput,
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
-
-<br />
-
-Build and send a `DELETE` HTTP Request:
-```typescript
-sendDELETE(
-  input: IRequestInput,
-  options?: Partial<IOptions>
-): Promise<IRequestResponse>
-```
 
 
 
