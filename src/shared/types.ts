@@ -46,17 +46,6 @@ type IRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type IResponseDataType = 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text';
 
 /**
- * Response Data
- * The format of the data that can be extracted from the Response object.
- */
-type IResponseData<T> = T extends 'arrayBuffer' ? ArrayBuffer
-  : T extends 'blob' ? Blob
-    : T extends 'formData' ? FormData
-      : T extends 'json' ? any
-        : T extends 'text' ? string
-          : never;
-
-/**
  * Options
  * The options object that can be passed and used for any request.
  */
@@ -88,7 +77,7 @@ interface IOptions {
  * Request Response
  * The object containing the result of the Request.
  */
-interface IRequestResponse {
+interface IRequestResponse<T> {
   // the HTTP status code extracted from the Response
   code: number;
 
@@ -96,7 +85,7 @@ interface IRequestResponse {
   headers: Headers;
 
   // the data extracted from the Response Instance
-  data: any;
+  data: T;
 }
 
 
@@ -115,7 +104,6 @@ export type {
   // types
   IRequestMethod,
   IResponseDataType,
-  IResponseData,
   IOptions,
   IRequestResponse,
 };

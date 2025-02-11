@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-console */
 import {
   IRequestInput,
@@ -22,7 +23,7 @@ import { validateResponse } from './validations/validations.js';
  * Builds and sends an HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -32,10 +33,10 @@ import { validateResponse } from './validations/validations.js';
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const send = async (
+const send = async <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => {
+): Promise<IRequestResponse<T>> => {
   // build the options
   const opts = buildOptions(options);
 
@@ -57,7 +58,7 @@ const send = async (
   return {
     code: res.status,
     headers: res.headers,
-    data: await extractResponseData(res, opts.responseDataType),
+    data: await extractResponseData<T>(res, opts.responseDataType),
   };
 };
 
@@ -65,7 +66,7 @@ const send = async (
  * Builds and sends a GET HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -75,22 +76,25 @@ const send = async (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendGET = (
+const sendGET = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'GET',
+): Promise<IRequestResponse<T>> => send<T>(
+  input,
+  {
+    ...options,
+    requestOptions: {
+      ...options?.requestOptions,
+      method: 'GET',
+    },
   },
-});
+);
 
 /**
  * Builds and sends a POST HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -100,22 +104,25 @@ const sendGET = (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendPOST = (
+const sendPOST = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'POST',
+): Promise<IRequestResponse<T>> => send<T>(
+  input,
+  {
+    ...options,
+    requestOptions: {
+      ...options?.requestOptions,
+      method: 'POST',
+    },
   },
-});
+);
 
 /**
  * Builds and sends a PUT HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -125,22 +132,25 @@ const sendPOST = (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendPUT = (
+const sendPUT = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'PUT',
+): Promise<IRequestResponse<T>> => send<T>(
+  input,
+  {
+    ...options,
+    requestOptions: {
+      ...options?.requestOptions,
+      method: 'PUT',
+    },
   },
-});
+);
 
 /**
  * Builds and sends a PATCH HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -150,22 +160,25 @@ const sendPUT = (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendPATCH = (
+const sendPATCH = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'PATCH',
+): Promise<IRequestResponse<T>> => send<T>(
+  input,
+    {
+    ...options,
+    requestOptions: {
+      ...options?.requestOptions,
+      method: 'PATCH',
+    },
   },
-});
+);
 
 /**
  * Builds and sends a DELETE HTTP Request based on the provided input and options.
  * @param input
  * @param options?
- * @returns Promise<IRequestResponse>
+ * @returns Promise<IRequestResponse<T>>
  * @throws
  * - INVALID_REQUEST_URL: if the provided input URL cannot be parsed
  * - INVALID_REQUEST_HEADERS: if invalid headers are passed in object format
@@ -175,16 +188,19 @@ const sendPATCH = (
  * - CONTENT_TYPE_MISSMATCH: if the Content-Type Headers don't match
  * - INVALID_RESPONSE_DTYPE: if the data type is not supported by the Response Instance
  */
-const sendDELETE = (
+const sendDELETE = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse> => send(input, {
-  ...options,
-  requestOptions: {
-    ...options?.requestOptions,
-    method: 'DELETE',
+): Promise<IRequestResponse<T>> => send<T>(
+  input,
+  {
+    ...options,
+    requestOptions: {
+      ...options?.requestOptions,
+      method: 'DELETE',
+    },
   },
-});
+);
 
 
 

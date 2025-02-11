@@ -22,7 +22,7 @@ Send a `GET` request to [HTTPBin](https://httpbin.org/):
 ```typescript
 import { sendGET } from 'fetch-request-node';
 
-await sendGET('https://httpbin.org/get');
+await sendGET<IHTTPBinResponse>('https://httpbin.org/get');
 // {
 //   code: 200,
 //   headers: Headers {
@@ -57,7 +57,7 @@ Send a `POST` request with `body` to [HTTPBin](https://httpbin.org/):
 ```typescript
 import { sendPOST } from 'fetch-request-node';
 
-await sendPOST(
+await sendPOST<IHTTPBinResponse>(
   'https://httpbin.org/post?id=1',
   {
     requestOptions: {
@@ -117,8 +117,9 @@ await sendPOST(
 
   Builds and sends an HTTP Request based on the provided input and options.
   ```typescript
-  await send(
-    'https://httpbin.org/get?foo=hey&bar=123', {
+  await send<IHTTPBinResponse>(
+    'https://httpbin.org/get?foo=hey&bar=123', 
+    {
       requestOptions: { method: 'GET' }
     }
   );
@@ -156,7 +157,7 @@ await sendPOST(
 
   Builds and sends a `GET` HTTP Request based on the provided input and options.
   ```typescript
-  await sendGET('https://httpbin.org/get?foo=hey&bar=123');
+  await sendGET<IHTTPBinResponse>('https://httpbin.org/get?foo=hey&bar=123');
   // {
   //   code: 200,
   //   headers: Headers {
@@ -191,7 +192,7 @@ await sendPOST(
 
   Builds and sends a `POST` HTTP Request based on the provided input and options.
   ```typescript
-  await sendPOST(
+  await sendPOST<IHTTPBinResponse>(
     'https://httpbin.org/post',
     {
       requestOptions: {
@@ -242,7 +243,7 @@ await sendPOST(
 
   Builds and sends a `PUT` HTTP Request based on the provided input and options.
   ```typescript
-  await sendPUT(
+  await sendPUT<IHTTPBinResponse>(
     'https://httpbin.org/put',
     {
       requestOptions: {
@@ -293,7 +294,7 @@ await sendPOST(
 
   Builds and sends a `PATCH` HTTP Request based on the provided input and options.
   ```typescript
-  await sendPATCH(
+  await sendPATCH<IHTTPBinResponse>(
     'https://httpbin.org/patch',
     {
       requestOptions: {
@@ -344,7 +345,7 @@ await sendPOST(
 
   Builds and sends a `DELETE` HTTP Request based on the provided input and options.
   ```typescript
-  await sendDELETE('https://httpbin.org/delete?id=1');
+  await sendDELETE<IHTTPBinResponse>('https://httpbin.org/delete?id=1');
   // {
   //   code: 200,
   //   headers: Headers {
@@ -501,11 +502,11 @@ await sendPOST(
 </details>
 
 <details>
-  <summary><code>IRequestResponse</code></summary>
+  <summary><code>IRequestResponse<T></code></summary>
 
   The object containing the result of the Request.
   ```typescript
-  interface IRequestResponse {
+  interface IRequestResponse<T> {
     // the HTTP status code extracted from the Response
     code: number;
 
@@ -513,7 +514,7 @@ await sendPOST(
     headers: Headers;
 
     // the data extracted from the Response Instance
-    data: any;
+    data: T;
   }
   ```
 </details>
