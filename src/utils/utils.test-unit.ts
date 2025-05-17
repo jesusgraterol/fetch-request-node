@@ -7,12 +7,12 @@ import { buildOptions, buildRequest, extractResponseData } from './utils.js';
  *                                            HELPERS                                             *
  ************************************************************************************************ */
 
-const rs = (): Response => (<any>{
-  arrayBuffer: vi.fn(() => Promise.resolve()),
-  blob: vi.fn(() => Promise.resolve()),
-  formData: vi.fn(() => Promise.resolve()),
-  json: vi.fn(() => Promise.resolve()),
-  text: vi.fn(() => Promise.resolve()),
+const rs = (data?: any): Response => (<any>{
+  arrayBuffer: vi.fn(() => Promise.resolve(data)),
+  blob: vi.fn(() => Promise.resolve(data)),
+  formData: vi.fn(() => Promise.resolve(data)),
+  json: vi.fn(() => Promise.resolve(data)),
+  text: vi.fn(() => Promise.resolve(data)),
 });
 
 
@@ -165,6 +165,32 @@ describe('buildRequest', () => {
 
 
 describe('extractResponseData', () => {
+  test('can extract any data type', async () => {
+    const res = rs();
+    await extractResponseData(res, 'arrayBuffer');
+    expect(res.arrayBuffer).toHaveBeenCalledOnce();
+    await extractResponseData(res, 'arrayBuffer');
+    expect(res.arrayBuffer).toHaveBeenCalledTimes(2);
+    await extractResponseData(res, 'blob');
+    expect(res.blob).toHaveBeenCalledOnce();
+    await extractResponseData(res, 'formData');
+    expect(res.formData).toHaveBeenCalledOnce();
+    await extractResponseData(res, 'json');
+    expect(res.json).toHaveBeenCalledOnce();
+    await extractResponseData(res, 'text');
+    expect(res.text).toHaveBeenCalledOnce();
+  });
+
+  test('throws an error if an invalid dtype is provided', async () => {
+    await expect(() => extractResponseData(rs(), <IResponseDataType>'nonsense')).rejects.toThrowError(ERRORS.INVALID_RESPONSE_DTYPE);
+  });
+});
+
+
+
+
+
+describe('extractErrorMessageFromResponseBody', () => {
   test('can extract any data type', async () => {
     const res = rs();
     await extractResponseData(res, 'arrayBuffer');
