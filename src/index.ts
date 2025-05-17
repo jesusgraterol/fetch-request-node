@@ -57,6 +57,7 @@ const send = async <T>(
   // return the request's response
   return {
     code: res.status,
+    statusText: res.statusText,
     headers: res.headers,
     data: await extractResponseData<T>(res, opts.responseDataType),
   };
