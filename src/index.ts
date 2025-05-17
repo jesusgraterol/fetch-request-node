@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable no-console */
+import { extractMessage } from 'error-message-utils';
 import {
   IRequestInput,
   IRequestMethod,
@@ -12,6 +13,7 @@ import {
   buildOptions,
   buildRequest,
   extractResponseData,
+  extractErrorMessageFromResponseBody,
 } from './utils/utils.js';
 import { validateResponse } from './validations/validations.js';
 
@@ -46,20 +48,31 @@ const send = async <T>(
   // send the request
   const res = await fetch(req);
 
-  // validate the response
-  validateResponse(req, res, opts);
+  // if the validation succeeds, build the response. Otherwise, try to extract the cause of the
+  // error from the body of the response
+  try {
+    // validate the response
+    validateResponse(req, res, opts);
 
-  // print a warning in case the request was redirected
-  if (res.redirected) {
-    console.warn(`The request sent to '${req.url}' was redirected. Please update the implementation to avoid future redirections.`);
+    // print a warning in case the request was redirected
+    if (res.redirected) {
+      console.warn(`The request sent to '${req.url}' was redirected. Please update the implementation to avoid future redirections.`);
+    }
+
+    // return the request's response
+    return {
+      code: res.status,
+      statusText: res.statusText,
+      headers: res.headers,
+      data: await extractResponseData<T>(res, opts.responseDataType),
+    };
+  } catch (e) {
+    const cause = await extractErrorMessageFromResponseBody(res);
+    if (cause) {
+      throw new Error(extractMessage(e), { cause });
+    }
+    throw e;
   }
-
-  // return the request's response
-  return {
-    code: res.status,
-    headers: res.headers,
-    data: await extractResponseData<T>(res, opts.responseDataType),
-  };
 };
 
 /**
