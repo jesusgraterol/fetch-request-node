@@ -56,7 +56,9 @@ const send = async <T>(
 
     // print a warning in case the request was redirected
     if (res.redirected) {
-      console.warn(`The request sent to '${req.url}' was redirected. Please update the implementation to avoid future redirections.`);
+      console.warn(
+        `The request sent to '${req.url}' was redirected. Please update the implementation to avoid future redirections.`,
+      );
     }
 
     // return the request's response
@@ -92,16 +94,14 @@ const send = async <T>(
 const sendGET = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse<T>> => send<T>(
-  input,
-  {
+): Promise<IRequestResponse<T>> =>
+  send<T>(input, {
     ...options,
     requestOptions: {
       ...options?.requestOptions,
       method: 'GET',
     },
-  },
-);
+  });
 
 /**
  * Builds and sends a POST HTTP Request based on the provided input and options.
@@ -120,16 +120,14 @@ const sendGET = <T>(
 const sendPOST = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse<T>> => send<T>(
-  input,
-  {
+): Promise<IRequestResponse<T>> =>
+  send<T>(input, {
     ...options,
     requestOptions: {
       ...options?.requestOptions,
       method: 'POST',
     },
-  },
-);
+  });
 
 /**
  * Builds and sends a PUT HTTP Request based on the provided input and options.
@@ -148,16 +146,14 @@ const sendPOST = <T>(
 const sendPUT = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse<T>> => send<T>(
-  input,
-  {
+): Promise<IRequestResponse<T>> =>
+  send<T>(input, {
     ...options,
     requestOptions: {
       ...options?.requestOptions,
       method: 'PUT',
     },
-  },
-);
+  });
 
 /**
  * Builds and sends a PATCH HTTP Request based on the provided input and options.
@@ -176,16 +172,14 @@ const sendPUT = <T>(
 const sendPATCH = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse<T>> => send<T>(
-  input,
-    {
+): Promise<IRequestResponse<T>> =>
+  send<T>(input, {
     ...options,
     requestOptions: {
       ...options?.requestOptions,
       method: 'PATCH',
     },
-  },
-);
+  });
 
 /**
  * Builds and sends a DELETE HTTP Request based on the provided input and options.
@@ -204,20 +198,14 @@ const sendPATCH = <T>(
 const sendDELETE = <T>(
   input: IRequestInput,
   options?: Partial<IOptions>,
-): Promise<IRequestResponse<T>> => send<T>(
-  input,
-  {
+): Promise<IRequestResponse<T>> =>
+  send<T>(input, {
     ...options,
     requestOptions: {
       ...options?.requestOptions,
       method: 'DELETE',
     },
-  },
-);
-
-
-
-
+  });
 
 /* ************************************************************************************************
  *                                         MODULE EXPORTS                                         *
