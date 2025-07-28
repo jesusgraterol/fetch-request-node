@@ -12,7 +12,7 @@ If you are working on a browser-based environment, make use of [fetch-request-br
 
 Install the package:
 ```bash
-npm install -S fetch-request-node
+npm i -S fetch-request-node
 ```
 
 ## Examples
@@ -116,6 +116,7 @@ await sendPOST<IHTTPBinResponse>(
 
 <details>
   <summary><code>send</code></summary>
+  <br/>
 
   Builds and sends an HTTP Request based on the provided input and options.
   ```typescript
@@ -153,10 +154,12 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>sendGET</code></summary>
+  <br/>
 
   Builds and sends a `GET` HTTP Request based on the provided input and options.
   ```typescript
@@ -189,10 +192,12 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>sendPOST</code></summary>
+  <br/>
 
   Builds and sends a `POST` HTTP Request based on the provided input and options.
   ```typescript
@@ -241,10 +246,12 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>sendPUT</code></summary>
+  <br/>
 
   Builds and sends a `PUT` HTTP Request based on the provided input and options.
   ```typescript
@@ -293,10 +300,12 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>sendPATCH</code></summary>
+  <br/>
 
   Builds and sends a `PATCH` HTTP Request based on the provided input and options.
   ```typescript
@@ -345,10 +354,12 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>sendDELETE</code></summary>
+  <br/>
 
   Builds and sends a `DELETE` HTTP Request based on the provided input and options.
   ```typescript
@@ -386,6 +397,7 @@ await sendPOST<IHTTPBinResponse>(
   //   }
   // }
   ```
+  <br/>
 </details>
 
 
@@ -399,24 +411,29 @@ await sendPOST<IHTTPBinResponse>(
 
 <details>
   <summary><code>IRequestInput</code></summary>
+  <br/>
 
   The URL of the request's target.
   ```typescript
   type IRequestInput = string | URL;
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>IRequestMethod</code></summary>
+  <br/>
 
   The HTTP Methods supported by this library. To make use of a different one, pass the method name directly in the request options.
   ```typescript
   type IRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>RequestInit</code></summary>
+  <br/>
 
   The [`RequestInit`](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) dictionary of the Fetch API represents the set of options that can be used to configure a fetch request.
   ```typescript
@@ -450,10 +467,12 @@ await sendPOST<IHTTPBinResponse>(
     window?: null;
   }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>IRequestOptions</code></summary>
+  <br/>
 
   The options that can be applied when sending a Fetch Request.
   IMPORTANT: the reason RequestInit is extended is because in the original type, the body property does not accept plain objects. Even though this makes sense,  utilities so the Request's body is always going to have a valid type.
@@ -467,19 +486,23 @@ await sendPOST<IHTTPBinResponse>(
     method: IRequestMethod;
   }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>IResponseDataType</code></summary>
+  <br/>
 
   The type of data that will be extracted from the HTTP Response body.
   ```typescript
   type IResponseDataType = 'arrayBuffer' | 'blob' | 'formData' | 'json' | 'text';
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>IOptions</code></summary>
+  <br/>
 
   The options object that can be passed and used for any request.
   ```typescript
@@ -507,10 +530,12 @@ await sendPOST<IHTTPBinResponse>(
     skipStatusCodeValidation: boolean;
   }
   ```
+  <br/>
 </details>
 
 <details>
   <summary><code>IRequestResponse<T></code></summary>
+  <br/>
 
   The object containing the result of the Request.
   ```typescript
@@ -528,6 +553,7 @@ await sendPOST<IHTTPBinResponse>(
     data: T;
   }
   ```
+  <br/>
 </details>
 
 
@@ -564,28 +590,3 @@ npm run test:integration
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-
-
-
-<br />
-
-## Deployment
-
-Install dependencies:
-```bash
-npm install
-```
-
-
-Build the library:
-```bash
-npm start
-```
-
-
-Publish to `npm`:
-```bash
-npm publish
-```
