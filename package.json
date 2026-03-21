@@ -44,7 +44,7 @@
     "vitest": "3.2.4"
   },
   "dependencies": {
-    "error-message-utils": "1.1.6",
-    "web-utils-kit": "1.0.16"
+    "error-message-utils": "1.2.1",
+    "web-utils-kit": "1.1.0"
   }
 }
